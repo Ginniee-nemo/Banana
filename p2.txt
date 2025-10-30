@@ -1,0 +1,39 @@
+Exp2:-
+Create s3 bucket
+Storebuildartifact
+Keep default settings
+Create another s3 bucket
+Deploybucket
+Uncheck block public and check acknowledgement keep other settings as it is
+Create codebuild project
+Connect to github account using OAuth
+Github 
+Repository in my GitHub account
+Os: Amazon Linux 2
+New service role
+Use a buildspec file
+Check noartifact check cloudwatch and create
+Create pipeline
+No service role
+Allow aws check box tick
+Custom location
+Choose build bucket
+Default aws managed key
+Add source stage
+Choose Github
+Repository Choose car/deploy
+Branch : Master
+Build stage
+Project name add
+Single build
+Deploy stage
+Amazon s3
+Choose deployment bucket
+If build stage fails
+View in codepipeline
+Project details environment service role link
+Add permission roles Amazons3fullaccess
+Attach policy
+Then refresh and run build and deploy again
+
+
