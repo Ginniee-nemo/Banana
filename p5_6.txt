@@ -1,0 +1,76 @@
+Exp5: To understand terraform lifecycle, core concepts/terminologies and install it on a Linux
+Machine.
+Go to site
+Unzip terraform_1.0.3_linux_amd64.zip
+Cd terraform_1.0.3_linux_amd64.zip
+Sudo mv terraform /usr/local/bin
+Terraform -v
+Exp6: To Build, change, and destroy AWS infrastructure Using Terraform.
+Exp 6
+#Install aws cli version 2 on linux
+Sudo apt-get install curl
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo apt install unzip
+sudo unzip awscliv2.zip
+sudo ./aws/install
+aws –version
+#output aws-cli/2.1.29 Python/3.8.8 Linux/5.4.0-1038-aws exe/x86_64.ubuntu.18
+prompt/off
+Create access key
+Login to AWS console, click on username and go to My security credentials.
+Take ids of accessid and secretid in notepad
+Aws configure
+Paste keys id
+Cd ~
+mkdir project-terraform
+cd project-terraform
+sudo nano variables.tf
+variable "aws_region" {
+ description = "The AWS region to create things in."
+ default = "ap-south-1"
+}
+variable "key_name" {
+ description = " SSH keys to connect to ec2 instance"
+ default = "terraform"
+}
+variable "instance_type" {
+ description = "instance type for ec2"
+ default = "t2.micro"
+}
+Code ends
+Sudo nano main.tf
+Code starts
+protocol = "tcp"
+cidr_blocks = ["0.0.0.0/0"]
+}
+tags= {
+Name = "security_jenkins_port"
+}
+}
+resource "aws_instance" "myFirstInstance" {
+ami = "ami-0b9064170e32bde34" ####(change ami id to your id)
+key_name = var.key_name
+instance_type = var.instance_type
+security_groups= [ "security_jenkins_port"]
+tags= {
+Name = "jenkins_instance"
+}
+}
+# Create Elastic IP address
+resource "aws_eip" "myFirstInstance" {
+vpc = true
+instance = aws_instance.myFirstInstance.id
+tags= {
+Name = "jenkins_elstic_ip"
+}
+}
+Terraform init
+Terraform plan
+Terraform apply
+Do you want to perform these actions?
+Terraform will perform the actions described above.
+Only 'yes' will be accepted to approve. Enter a value: yes
+Now login to EC2 console, to see the new instances up and running, you can see
+Jenkins_instance is up and running which we deploy from terraform.
+Terraform destroy
+Yes

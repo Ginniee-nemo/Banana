@@ -1,0 +1,57 @@
+Exp@7- To understand Static Analysis SAST process and learn to integrate Jenkins SAST to
+SonarQube/GitLab.
+Installation of Jenkins
+wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key
+| sudo apt-key add –
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stablebinary/ >
+sudo apt update
+sudo apt install Jenkins
+sudo systemctl start Jenkins
+sudo systemctl status Jenkins
+To check firewall settings
+sudo ufw allow
+To set up your installation, visit Jenkins on its default port, 8080, using your server domain
+name or
+IP address: http://your_server_ip_or_domain:8080
+You should see the Unlock Jenkins screen, which displays the location of the initial password:
+In the terminal window, use the cat command to display the password:
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+Copy the 32-character alphanumeric password from the terminal and paste it into the
+Administrator
+password field, then click Continue.
+When the installation is complete, you will be prompted to set up the first administrative
+user. It’s
+possible to skip this step and continue as admin using the initial password we used above,
+but we’ll
+take a moment to create the user.
+After confirming the appropriate information, click Save
+Click Start using Jenkins to visit the main Jenkins dashboard:
+Sonarcube setup
+docker run -d -p 9000:9000 sonarqube
+login
+Generate User Token
+Now, we need to get the SonarQube user token to make connection between Jenkins and
+SonarQube. For the same, go to Administration> User > My Account > Security and then,
+from
+the bottom of the page you can create new tokens by clicking the Generate Button. Copy the
+Token
+and keep it safe.
+C96798e9bd081e117189b516c868ddb7d87ee785 SonarQube
+Jenkins Setup for SonarQube
+Before all, we need to install the SonarQube Scanner plugin in Jenkins. For the same, go to
+Manage
+Jenkins > Plugin Manager > Available. From here, type SonarQube Scanner then select and
+install.
+Now, we need to configure the Jenkins plugin for SonarQube Scanner to make a connection
+with
+the SonarQube Instance. For that, got to Manage Jenkins > Configure System > SonarQube
+Server. Then, Add SonarQube. In this, give the Installation Name, Server URL then Add the
+Authentication token in the Jenkins Credential Manager and select the same in the
+configuration.
+Now, we need to configure the Jenkins plugin for SonarQube Scanner to make a connection
+with
+the SonarQube Instance. For that, got to Manage Jenkins > Configure System > SonarQube
+Server. Then, Add SonarQube. In this, give the Installation Name, Server URL then Add the
+Authentication token in the Jenkins Credential Manager and select the same in the
+configuration.
+Name sonarcube: install automatically

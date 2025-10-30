@@ -1,0 +1,98 @@
+Exp4- To understand the Kubernetes Cluster Architecture, install and Spin Up a Kubernetes
+Cluster on Linux Machines/Cloud Platforms.
+STEP 1:
+Check security group,delete all SG only keep default
+Create 2 instance
+Create key pair
+Create security group and allow traffic
+Launch Instance
+Check security group of both instances
+Click on security group id of launch wizard 1
+Edit inbound rules
+Delete all rules
+Then add new rule
+Select all traffic and anywhereIPV4
+Now save rules
+Name the instances
+Select master and connect
+Connection using ec2 instance connect
+Username : ubuntu
+Sameway connect to worker-node
+Step 2:
+Assign Unique Hostname for Each Server Node
+$ sudo hostnamectl set-hostname master-node
+Than exit
+Refresh
+Next, set a worker node hostname by entering the following on the worker
+server:
+$ sudo hostnamectl set-hostname worker1
+STEP 3:
+On both master and worker1
+$ sudo apt-get update
+STEP 4:
+On both master and worker1
+Install docker
+sudo apt-get install docker.io
+STEP 5 : Start and Enable Docker
+On worker node
+Set Docker to launch at boot by entering the following:
+$ sudo systemctl enable docker
+$ sudo systemctl status docker
+Ctrl+c
+Clear
+sudo systemctl start docker
+STEP 6 Install Kubernetes
+On workernode
+https://kubernetes.io/docs/setup/productionenvironment/tools/kubeadm/install-kubeadm/
+Then add signingkey commend
+Curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o
+/etc/apt/keyrings/Kubernetes-apt-keyring.gpg
+Step 7 : Begin Kubernetes Deployment
+workernode
+$ sudo swapoff –a
+STEP 8:
+Initialize Kubernetes on Master Node
+$ sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all
+If getting error
+Run below code on both
+$ sudo touch "/etc/docker/daemon.json"
+$ sudo nano "/etc/docker/daemon.json"
+ADD code
+CTRL+ O enter CTRL X
+$ sudo cat "/etc/docker/daemon.json"
+{
+"exec-opts": ["native.cgroupdriver=systemd"]
+}
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart docker
+$ sudo systemctl restart kubelet
+$ sudo kubeadm reset
+STEP 9 on master node
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all
+Next, enter the following to create a directory for the cluster: (Master)
+kubernetes-master $ mkdir -p $HOME/.kube
+kubernetes-master $ sudo cp -i /etc/kubernetes/admin.conf
+$HOME/.kube/config
+kubernetes-master $ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+copy
+kubeadm join 172.31.90.169:6443 --token s1oata.5sllt69zvc8yj5tc \
+--discovery-token-ca-cert-hash
+sha256:80c23edc2552e4d0e671cb974fd0dc912a025d91f1c996f72c698709537
+d05e1
+Makeit as and copy in worker after flannel is created on master(after step
+10)
+kubeadm join 172.31.90.169:6443 --token s1oata.5sllt69zvc8yj5tc --
+discovery-token-ca-cert-hash
+sha256:80c23edc2552e4d0e671cb974fd0dc912a025d91f1c996f72c698709537
+d05e1
+it will give error
+sudo kubeadm join 172.31.90.169:6443 --token s1oata.5sllt69zvc8yj5tc --
+discovery-token-ca-cert-hash
+sha256:80c23edc2552e4d0e671cb974fd0dc912a025d91f1c996f72c698709537
+d05e1 --ignore-preflight-errors=all
+STEP 10 Copy weblink from masternode
+https://kubernetes.io/docs/concepts/cluster-administration/addons/
+goto flannel
+copy this command and paste on master
+Flannel created
+Only to do till flannel 
